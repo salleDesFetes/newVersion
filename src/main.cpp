@@ -9,10 +9,19 @@
 
 
 Adafruit_SGP30 sgp;
-int i = 15;
-long last_millis = 0;
+
+void header(const char *string, uint16_t color)
+{
+    M5.Lcd.fillScreen(color);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+    M5.Lcd.fillRect(0, 0, 320, 30, TFT_BLACK);
+    M5.Lcd.setTextDatum(TC_DATUM);
+    M5.Lcd.drawString(string, 160, 3, 4); 
+}
 
 void setup() {
+  // Serial.print(analogRead(21));
   // put your setup code here, to run once:
   M5.begin();
   Serial.begin(115200);
@@ -20,36 +29,38 @@ void setup() {
   if (! sgp.begin()){
     Serial.println("Sensor not found :(");
     while (1);
-  } else {
-    M5.Lcd.drawString("TVOC:", 50, 40, 4);
-    M5.Lcd.drawString("eCO2:", 50, 80, 4);
-    Serial.print("Found SGP30 serial #");
-    Serial.print(sgp.serialnumber[0], HEX);
-    Serial.print(sgp.serialnumber[1], HEX);
-    Serial.println(sgp.serialnumber[2], HEX);
-    M5.Lcd.drawString("Initialization...", 140, 120, 4);
-    M5.Lcd.fillRect(0, 120, 300, 30, TFT_BLACK);
+  } 
+
+  M5.Lcd.drawString("TVOC:", 50, 40, 4);
+  M5.Lcd.drawString("eCO2:", 50, 80, 4);
+  Serial.print("Found SGP30 serial #");
+  Serial.print(sgp.serialnumber[0], HEX);
+  Serial.print(sgp.serialnumber[1], HEX);
+  Serial.println(sgp.serialnumber[2], HEX);
+  M5.Lcd.drawString("Initialization...", 140, 120, 4);
+  M5.Lcd.fillRect(0, 120, 300, 30, TFT_BLACK);
+
+  for(int i = 15; i > 0; i--) {
+      M5.Lcd.clear();    
+      M5.Lcd.fillRect(198, 120, 40, 20, TFT_BLACK);
+      M5.Lcd.drawNumber(i, 20, 120, 4);
+      M5.Lcd.progressBar(0, 0, 10, TFT_HEIGHT, (100 / 15) * i);
+      delay(1000);
   }
 
+  Serial.println("end for");
   printLocalTime();
   setupClock();
   setupAPI();
+
+  Serial.println("End Setup");
 }
 
 
 void loop() {
 
-    while(i > 0) {    
-    if(millis()- last_millis > 1000) {
-      last_millis = millis();
-      i--;
-      M5.Lcd.fillRect(198, 120, 40, 20, TFT_BLACK);
-      M5.Lcd.drawNumber(i, 20, 120, 4);
-    }
-  }
 
   printTime();
-  loopAPI();
 
   M5.Lcd.fillRect(0, 120, 300, 30, TFT_BLACK);
 
@@ -65,19 +76,10 @@ void loop() {
   M5.Lcd.drawString("le co2 :", 200, 80, 4);
   Serial.print("TVOC "); Serial.print(sgp.TVOC); Serial.print(" ppb\t");
   Serial.print("eCO2 "); Serial.print(sgp.eCO2); Serial.println(" ppm");
+  loopAPI(sgp.TVOC);
   delay(1000);
 }
 
-
-void header(const char *string, uint16_t color)
-{
-    M5.Lcd.fillScreen(color);
-    M5.Lcd.setTextSize(1);
-    M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-    M5.Lcd.fillRect(0, 0, 320, 30, TFT_BLACK);
-    M5.Lcd.setTextDatum(TC_DATUM);
-    M5.Lcd.drawString(string, 160, 3, 4); 
-}
 
 
 void printTime()

@@ -37,7 +37,7 @@ void setupAPI() {
   //initialize a random number
   randomSeed(analogRead(23));
 }
-void loopAPI() {
+void loopAPI(int value) {
   //Send an HTTP POST request every 10 seconds
   if ((millis() - last_time) > timer_delay) {
     if(WiFi.status()== WL_CONNECTED){
@@ -53,7 +53,7 @@ void loopAPI() {
 
       data["id"] = "1";
       data["type"] = "string";
-      data["val"] = value++;
+      data["val"] = value;
       postLogs["unixTimestamp"] = 0;
       postLogs.createNestedArray("data");
       postLogs["data"].add(data);
