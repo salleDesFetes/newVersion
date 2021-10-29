@@ -6,6 +6,9 @@
 #include <HTTPClient.h>
 #include "bagTower.h"
 
+const char* ssid = "HUAWEI P smart";
+const char* password = "MooMoomin";
+
 unsigned int value = 0;
 
 // Domain Name with full URL Path for HTTP POST Request
@@ -48,8 +51,8 @@ void loopAPI() {
       // construct jsonObject
       // transform jsonObject into string
 
-      data["id"] = 1;
-      data["type"] = "number";
+      data["id"] = "1";
+      data["type"] = "string";
       data["val"] = value++;
       postLogs["unixTimestamp"] = 0;
       postLogs.createNestedArray("data");
