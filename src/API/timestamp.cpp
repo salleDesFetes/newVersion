@@ -1,5 +1,5 @@
 #include <WiFi.h>
-#include "time.h"
+#include "clock.h"
 #include "bagTower.h"
 
 const char* ntpServer = "pool.ntp.org";
