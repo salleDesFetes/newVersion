@@ -4,8 +4,9 @@
 */
 
 
+#include <Arduino.h>
 #include <M5Stack.h>
-#include <Adafruit_SGP30.h>
+#include "Adafruit_SGP30.h"
 
 
 Adafruit_SGP30 sgp;
