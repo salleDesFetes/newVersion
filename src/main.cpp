@@ -76,7 +76,7 @@ void loop() {
   M5.Lcd.drawString("le co2 :", 200, 80, 4);
   Serial.print("TVOC "); Serial.print(sgp.TVOC); Serial.print(" ppb\t");
   Serial.print("eCO2 "); Serial.print(sgp.eCO2); Serial.println(" ppm");
-  loopAPI(sgp.TVOC);
+  loopAPI(sgp.eCO2);
   delay(1000);
 }
 
